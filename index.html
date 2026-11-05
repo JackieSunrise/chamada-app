@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chamada · Chamada escolar para professores</title>
+  <meta name="description" content="Faça chamadas, acompanhe o histórico dos alunos, compartilhe turmas com outros professores e gere relatórios. Funciona sem internet.">
+  <style>
+    :root {
+      --fundo: #11111B;
+      --superficie: #1E1E2E;
+      --superficie-2: #2A2A3E;
+      --texto: #FFFFFF;
+      --texto-2: #A6ADC8;
+      --texto-3: #7F849C;
+      --azul: #89B4FA;
+      --roxo: #CBA6F7;
+      --verde: #A6E3A1;
+      --rosa: #F38BA8;
+      --laranja: #FAB387;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+    a { color: var(--azul); text-decoration: none; }
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 22px; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(17, 17, 27, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #2A2A3E;
+    }
+    .topo { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .marca { font-weight: 800; font-size: 20px; color: var(--texto); letter-spacing: -0.2px; }
+    .marca span { color: var(--azul); }
+    .topo nav a { color: var(--texto-2); margin-left: 22px; font-size: 14px; }
+    .topo nav a:hover { color: var(--texto); }
+
+    .hero { padding: 84px 0 70px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ""; position: absolute; inset: -120px -80px auto; height: 420px;
+      background: radial-gradient(closest-side, rgba(137,180,250,0.22), transparent),
+                  radial-gradient(closest-side at 70% 40%, rgba(203,166,247,0.18), transparent);
+      pointer-events: none;
+    }
+    .selo {
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      background: var(--superficie); border: 1px solid #45475A;
+      color: var(--texto-2); font-size: 13px; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.08;
+      letter-spacing: -1px; margin-bottom: 18px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--azul), var(--roxo));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p.lead { color: var(--texto-2); font-size: 18px; max-width: 620px; margin: 0 auto 34px; }
+
+    .botoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 26px; border-radius: 14px; font-weight: 700; font-size: 16px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-principal {
+      background: var(--azul); color: var(--fundo);
+      box-shadow: 0 10px 30px -10px rgba(137,180,250,0.6);
+    }
+    .btn-secundario { background: transparent; color: var(--azul); border: 1.5px solid #45475A; }
+    .info-download { color: var(--texto-3); font-size: 13px; margin-top: 16px; }
+
+    section { padding: 70px 0; }
+    .titulo-secao { text-align: center; margin-bottom: 44px; }
+    .titulo-secao h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .titulo-secao p { color: var(--texto-2); }
+
+    .grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+    .cartao {
+      background: var(--superficie); border: 1px solid #2A2A3E; border-radius: 18px; padding: 24px;
+    }
+    .cartao .icone {
+      width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+      font-size: 22px; margin-bottom: 14px;
+    }
+    .cartao h3 { font-size: 17px; margin-bottom: 6px; }
+    .cartao p { color: var(--texto-2); font-size: 14.5px; }
+    .i-azul { background: rgba(137,180,250,0.14); }
+    .i-verde { background: rgba(166,227,161,0.14); }
+    .i-roxo { background: rgba(203,166,247,0.14); }
+    .i-laranja { background: rgba(250,179,135,0.14); }
+
+    .galeria {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start;
+    }
+    .galeria figure {
+      background: var(--superficie); border: 1px solid #2A2A3E; border-radius: 22px;
+      padding: 14px; text-align: center;
+    }
+    .galeria img { width: 100%; border-radius: 14px; display: block; }
+    .galeria figcaption { color: var(--texto-2); font-size: 14px; margin-top: 12px; }
+    @media (max-width: 720px) { .galeria { grid-template-columns: 1fr; } }
+
+    .passos { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; counter-reset: passo; }
+    .passo { counter-increment: passo; position: relative; padding: 26px 24px 24px 74px; background: var(--superficie); border-radius: 18px; border: 1px solid #2A2A3E; }
+    .passo::before {
+      content: counter(passo); position: absolute; left: 22px; top: 22px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--azul); color: var(--fundo); font-weight: 800;
+      display: grid; place-items: center;
+    }
+    .passo h3 { font-size: 16px; margin-bottom: 4px; }
+    .passo p { color: var(--texto-2); font-size: 14px; }
+
+    .aviso {
+      max-width: 760px; margin: 0 auto; padding: 22px 24px; border-radius: 16px;
+      background: rgba(250,179,135,0.08); border: 1px solid rgba(250,179,135,0.35);
+      color: var(--texto-2); font-size: 14.5px;
+    }
+    .aviso strong { color: var(--laranja); }
+
+    .download-final {
+      text-align: center; padding: 80px 0;
+      background: linear-gradient(180deg, transparent, rgba(137,180,250,0.08));
+    }
+    .download-final h2 { font-size: 32px; font-weight: 800; margin-bottom: 12px; }
+    .download-final p { color: var(--texto-2); margin-bottom: 30px; }
+
+    footer { border-top: 1px solid #2A2A3E; padding: 28px 0; color: var(--texto-3); font-size: 13px; text-align: center; }
+
+    @media (max-width: 600px) {
+      .topo nav a { margin-left: 14px; font-size: 13px; }
+      .hero { padding: 56px 0 50px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container topo">
+      <div class="marca">Chamada<span>.</span></div>
+      <nav>
+        <a href="#recursos">Recursos</a>
+        <a href="#telas">Telas</a>
+        <a href="#instalar">Instalar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="container">
+        <span class="selo">Para professores · Android 7 ou superior</span>
+        <h1>A chamada da sua turma,<br><em>sem complicação.</em></h1>
+        <p class="lead">Faça a chamada em segundos, acompanhe o histórico de cada aluno mês a mês, compartilhe a turma com outro professor e gere o relatório final. Funciona mesmo sem internet.</p>
+        <div class="botoes">
+          <a class="btn btn-principal" href="downloads/chamada-1.1.apk" download>
+            ⬇ Baixar APK
+          </a>
+          <a class="btn btn-secundario" href="#instalar">Como instalar</a>
+        </div>
+        <p class="info-download">Versão 1.1 · Gratuito · Pode ser instalado diretamente no celular</p>
+      </div>
+    </div>
+
+    <section id="recursos">
+      <div class="container">
+        <div class="titulo-secao">
+          <h2>Tudo o que o professor precisa</h2>
+          <p>Pensado para a rotina de sala de aula, do primeiro dia ao fim do curso.</p>
+        </div>
+        <div class="grade">
+          <div class="cartao">
+            <div class="icone i-verde">✓</div>
+            <h3>Chamada rápida</h3>
+            <p>O padrão é presença. Marque só as faltas com um toque, e justifique com atestado anexado à foto.</p>
+          </div>
+          <div class="cartao">
+            <div class="icone i-azul">📅</div>
+            <h3>Histórico mensal</h3>
+            <p>Cada aluno tem o histórico agrupado por mês, com a presença, as faltas e as justificativas de cada dia.</p>
+          </div>
+          <div class="cartao">
+            <div class="icone i-roxo">👥</div>
+            <h3>Compartilhe a turma</h3>
+            <p>Convide outro professor por link. Você escolhe se ele pode fazer chamadas, adicionar alunos ou excluir registros.</p>
+          </div>
+          <div class="cartao">
+            <div class="icone i-laranja">🔒</div>
+            <h3>Fechamento de mês</h3>
+            <p>Feche o mês quando terminar. Dentro do prazo, ainda dá para corrigir. Depois, só com reabertura, registrada no histórico.</p>
+          </div>
+          <div class="cartao">
+            <div class="icone i-azul">📄</div>
+            <h3>Relatórios em PDF e CSV</h3>
+            <p>Relatório mensal e relatório final da turma, com as presenças de cada aluno e os atestados anexados.</p>
+          </div>
+          <div class="cartao">
+            <div class="icone i-verde">☁</div>
+            <h3>Offline e sincronizado</h3>
+            <p>Use sem internet. Quando a conexão volta, as informações são enviadas e sincronizadas com os outros aparelhos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="telas">
+      <div class="container">
+        <div class="titulo-secao">
+          <h2>Veja como fica</h2>
+          <p>Telas reais do aplicativo.</p>
+        </div>
+        <div class="galeria">
+          <figure>
+            <img src="img/turma.png" alt="Tela da turma com calendário, resumo do mês e lista de alunos" loading="lazy">
+            <figcaption>Turma: resumo do mês, calendário e alunos</figcaption>
+          </figure>
+          <figure>
+            <img src="img/chamada.png" alt="Tela de chamada com contador de faltas por aluno" loading="lazy">
+            <figcaption>Chamada: um toque para cada falta</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="instalar">
+      <div class="container">
+        <div class="titulo-secao">
+          <h2>Como instalar no celular</h2>
+          <p>Leva menos de dois minutos.</p>
+        </div>
+        <div class="passos">
+          <div class="passo">
+            <h3>Baixe o APK</h3>
+            <p>Toque em “Baixar APK” nesta página. O arquivo tem cerca de 19 MB.</p>
+          </div>
+          <div class="passo">
+            <h3>Permita a instalação</h3>
+            <p>Se o Android pedir, autorize a instalação de apps deste navegador (Configurações → Apps → Instalar apps desconhecidos).</p>
+          </div>
+          <div class="passo">
+            <h3>Abra e entre</h3>
+            <p>Entre com sua conta Google. Use o mesmo e-mail que você usa no Gmail.</p>
+          </div>
+        </div>
+
+        <div class="aviso" style="margin-top: 26px;">
+          <strong>Atenção:</strong> este app não está na Play Store. Ele é instalado diretamente do site, por isso o Android mostra um aviso de segurança na primeira vez. Baixe só por este endereço oficial.
+        </div>
+      </div>
+    </section>
+
+    <div class="download-final">
+      <div class="container">
+        <h2>Pronto para começar?</h2>
+        <p>Baixe a versão 1.1 e faça a sua primeira chamada hoje.</p>
+        <a class="btn btn-principal" href="downloads/chamada-1.1.apk" download>⬇ Baixar APK</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">Chamada · Versão 1.1 · Feito para professores</div>
+  </footer>
+
+</body>
+</html>
