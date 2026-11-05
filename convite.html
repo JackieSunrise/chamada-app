@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Convite · Chamada</title>
+  <style>
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: #11111B; color: #FFFFFF;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 24px; box-sizing: border-box;
+    }
+    .cartao {
+      max-width: 460px; width: 100%; background: #1E1E2E; border: 1px solid #2A2A3E;
+      border-radius: 20px; padding: 32px 28px; text-align: center;
+    }
+    h1 { font-size: 24px; margin: 0 0 10px; }
+    p { color: #A6ADC8; line-height: 1.6; margin: 0 0 22px; }
+    .codigo {
+      display: inline-block; font-family: ui-monospace, Consolas, monospace; font-size: 15px;
+      background: #11111B; border: 1px solid #45475A; border-radius: 10px;
+      padding: 8px 14px; color: #CBA6F7; margin-bottom: 24px; word-break: break-all;
+    }
+    .btn {
+      display: block; padding: 15px; border-radius: 14px; font-weight: 700; font-size: 16px;
+      text-decoration: none; margin-bottom: 12px;
+    }
+    .principal { background: #89B4FA; color: #11111B; }
+    .secundario { border: 1.5px solid #45475A; color: #89B4FA; }
+    small { color: #7F849C; display: block; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="cartao">
+    <h1>Você recebeu um convite</h1>
+    <p>Um professor compartilhou uma turma com você no Chamada. Abra o app para aceitar o convite.</p>
+    <div class="codigo" id="codigo">—</div>
+
+    <a class="btn principal" id="abrirApp" href="#">Abrir no app Chamada</a>
+    <a class="btn secundario" href="downloads/chamada-1.1.apk" download>Ainda não tenho o app: baixar APK</a>
+
+    <p><small>Depois de instalar, toque em “Entrar com código” na tela inicial e digite o código acima, se o convite não abrir sozinho.</small></p>
+  </div>
+
+  <script>
+    // O codigo pode vir do caminho (/convite/CODIGO) ou de ?codigo=CODIGO.
+    // O ?codigo= e o que funciona no GitHub Pages, que nao faz reescrita de caminho.
+    var params = new URLSearchParams(window.location.search);
+    var partes = window.location.pathname.split('/').filter(Boolean);
+    var ultimo = partes.length ? partes[partes.length - 1] : '';
+    var codigo = params.get('codigo') || (ultimo.toLowerCase() !== 'convite.html' && ultimo.toLowerCase() !== 'convite' ? ultimo : '');
+    codigo = codigo ? decodeURIComponent(codigo).trim() : '';
+    if (codigo) {
+      document.getElementById('codigo').textContent = codigo;
+      document.getElementById('abrirApp').href = 'chamada://convite/' + encodeURIComponent(codigo);
+    } else {
+      document.getElementById('codigo').textContent = 'Código não informado';
+      document.getElementById('abrirApp').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
